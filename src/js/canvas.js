@@ -1,4 +1,5 @@
 import utils, { distance, noIntersection, randomColor, randomIntFromRange, randomUnfilled } from './utils'
+import { resolveCollision } from './utils_elastic_collision'
 
 const canvas = document.querySelector('canvas')
 const c = canvas.getContext('2d')
@@ -37,6 +38,7 @@ class Circle {
 		}
 		this.radius = radius
 		this.color = color
+		this.mass = 1
 	}
 
 	draw() {
@@ -52,8 +54,9 @@ class Circle {
 		for (let i = 0; i < circles.length; i++) {
 			const c = circles[i]
 			if (this === c) continue
-			if (distance(c.x, c.y, this.x, this.y) - c.radius + this.radius < 0) {
+			if (distance(c.x, c.y, this.x, this.y) - (c.radius + this.radius) < 0) {
 				console.log('collided')
+				resolveCollision(this, c)
 			}
 		}
 		if (this.x - this.radius <= 0 || this.x + this.radius >= canvas.width) {

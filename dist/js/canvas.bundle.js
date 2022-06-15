@@ -90,6 +90,80 @@ module.exports = {
   randomUnfilled: randomUnfilled
 };
 
+/***/ }),
+
+/***/ "./src/js/utils_elastic_collision.js":
+/*!*******************************************!*\
+  !*** ./src/js/utils_elastic_collision.js ***!
+  \*******************************************/
+/***/ ((module) => {
+
+/**
+ * Rotates coordinate system for velocities
+ *
+ * Takes velocities and alters them as if the coordinate system they're on was rotated
+ *
+ * @param  Object | velocity | The velocity of an individual particle
+ * @param  Float  | angle    | The angle of collision between two objects in radians
+ * @return Object | The altered x and y velocities after the coordinate system has been rotated
+ */
+function rotate(velocity, angle) {
+  var rotatedVelocities = {
+    x: velocity.x * Math.cos(angle) - velocity.y * Math.sin(angle),
+    y: velocity.x * Math.sin(angle) + velocity.y * Math.cos(angle)
+  };
+  return rotatedVelocities;
+}
+/**
+ * Swaps out two colliding particles' x and y velocities after running through
+ * an elastic collision reaction equation
+ *
+ * @param  Object | particle      | A particle object with x and y coordinates, plus velocity
+ * @param  Object | otherParticle | A particle object with x and y coordinates, plus velocity
+ * @return Null | Does not return a value
+ */
+
+
+function resolveCollision(particle, otherParticle) {
+  var xVelocityDiff = particle.velocity.x - otherParticle.velocity.x;
+  var yVelocityDiff = particle.velocity.y - otherParticle.velocity.y;
+  var xDist = otherParticle.x - particle.x;
+  var yDist = otherParticle.y - particle.y; // Prevent accidental overlap of particles
+
+  if (xVelocityDiff * xDist + yVelocityDiff * yDist >= 0) {
+    // Grab angle between the two colliding particles
+    var angle = -Math.atan2(otherParticle.y - particle.y, otherParticle.x - particle.x); // Store mass in var for better readability in collision equation
+
+    var m1 = particle.mass;
+    var m2 = otherParticle.mass; // Velocity before equation
+
+    var u1 = rotate(particle.velocity, angle);
+    var u2 = rotate(otherParticle.velocity, angle); // Velocity after 1d collision equation
+
+    var v1 = {
+      x: u1.x * (m1 - m2) / (m1 + m2) + u2.x * 2 * m2 / (m1 + m2),
+      y: u1.y
+    };
+    var v2 = {
+      x: u2.x * (m1 - m2) / (m1 + m2) + u1.x * 2 * m2 / (m1 + m2),
+      y: u2.y
+    }; // Final velocity after rotating axis back to original location
+
+    var vFinal1 = rotate(v1, -angle);
+    var vFinal2 = rotate(v2, -angle); // Swap particle velocities for realistic bounce effect
+
+    particle.velocity.x = vFinal1.x;
+    particle.velocity.y = vFinal1.y;
+    otherParticle.velocity.x = vFinal2.x;
+    otherParticle.velocity.y = vFinal2.y;
+  }
+}
+
+module.exports = {
+  resolveCollision: resolveCollision,
+  rotate: rotate
+};
+
 /***/ })
 
 /******/ 	});
@@ -170,11 +244,14 @@ var __webpack_exports__ = {};
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils */ "./src/js/utils.js");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_utils__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _utils_elastic_collision__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils_elastic_collision */ "./src/js/utils_elastic_collision.js");
+/* harmony import */ var _utils_elastic_collision__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_utils_elastic_collision__WEBPACK_IMPORTED_MODULE_1__);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
 
 
 var canvas = document.querySelector('canvas');
@@ -209,6 +286,7 @@ var Circle = /*#__PURE__*/function () {
     };
     this.radius = radius;
     this.color = color;
+    this.mass = 1;
   }
 
   _createClass(Circle, [{
@@ -229,8 +307,9 @@ var Circle = /*#__PURE__*/function () {
         var _c = circles[i];
         if (this === _c) continue;
 
-        if ((0,_utils__WEBPACK_IMPORTED_MODULE_0__.distance)(_c.x, _c.y, this.x, this.y) - _c.radius + this.radius < 0) {
+        if ((0,_utils__WEBPACK_IMPORTED_MODULE_0__.distance)(_c.x, _c.y, this.x, this.y) - (_c.radius + this.radius) < 0) {
           console.log('collided');
+          (0,_utils_elastic_collision__WEBPACK_IMPORTED_MODULE_1__.resolveCollision)(this, _c);
         }
       }
 
