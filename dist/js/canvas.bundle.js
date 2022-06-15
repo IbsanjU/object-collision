@@ -200,6 +200,9 @@ function animate() {
 
   if ((0,_utils__WEBPACK_IMPORTED_MODULE_0__.distance)(circles[0].x, circles[0].y, circles[1].x, circles[1].y) < circles[0].radius + circles[1].radius) {
     console.log('collided');
+    circles[0].color = 'orange';
+  } else {
+    circles[0].color = 'black';
   }
 
   console.log((0,_utils__WEBPACK_IMPORTED_MODULE_0__.distance)(circles[0].x, circles[0].y, circles[1].x, circles[1].y));

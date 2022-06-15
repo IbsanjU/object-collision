@@ -74,6 +74,9 @@ function animate() {
 
 	if (distance(circles[0].x, circles[0].y, circles[1].x, circles[1].y) < circles[0].radius + circles[1].radius) {
 		console.log('collided')
+		circles[0].color = 'orange'
+	} else {
+		circles[0].color = 'black'
 	}
 
 	console.log(distance(circles[0].x, circles[0].y, circles[1].x, circles[1].y))
