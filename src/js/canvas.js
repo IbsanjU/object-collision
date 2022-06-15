@@ -88,8 +88,8 @@ let circles = []
 function init() {
 	circles = []
 
-	for (let i = 0; i < 200; i++) {
-		const radius = randomIntFromRange(8, 30)
+	for (let i = 0; i < 130; i++) {
+		const radius = randomIntFromRange(8, 50)
 		let x = randomIntFromRange(radius, canvas.width - radius)
 		let y = randomIntFromRange(radius, canvas.height - radius)
 		const color = randomColor(colors)

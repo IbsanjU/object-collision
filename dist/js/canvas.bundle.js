@@ -363,8 +363,8 @@ var circles = [];
 function init() {
   circles = [];
 
-  for (var i = 0; i < 200; i++) {
-    var radius = (0,_utils__WEBPACK_IMPORTED_MODULE_1__.randomIntFromRange)(8, 30);
+  for (var i = 0; i < 130; i++) {
+    var radius = (0,_utils__WEBPACK_IMPORTED_MODULE_1__.randomIntFromRange)(8, 50);
     var x = (0,_utils__WEBPACK_IMPORTED_MODULE_1__.randomIntFromRange)(radius, canvas.width - radius);
     var y = (0,_utils__WEBPACK_IMPORTED_MODULE_1__.randomIntFromRange)(radius, canvas.height - radius);
     var color = (0,_utils__WEBPACK_IMPORTED_MODULE_1__.randomColor)((_colors__WEBPACK_IMPORTED_MODULE_0___default()));
