@@ -73,7 +73,7 @@ class Circle {
 		}
 
 		// mouse collision
-		if (distance(mouse.x, mouse.y, this.x, this.y) < 30 && this.opacity < 0.2) {
+		if (distance(mouse.x, mouse.y, this.x, this.y) < 120 && this.opacity < 0.2) {
 			console.log('mouse collided')
 			this.opacity += 0.02
 		} else if (this.opacity > 0) {
