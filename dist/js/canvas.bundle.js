@@ -7,6 +7,12 @@
   \*************************/
 /***/ ((module) => {
 
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
 function randomIntFromRange(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
@@ -33,11 +39,55 @@ function distance(x1, y1, x2, y2) {
   var yDist = y2 - y1;
   return Math.sqrt(Math.pow(xDist, 2) + Math.pow(yDist, 2));
 }
+/**
+ * @param {Circle} c Circle
+ * @param {Array<Circle>} cs circles array
+ * @returns boolean
+ */
+
+
+function noIntersection(c, cs) {
+  var _iterator = _createForOfIteratorHelper(cs),
+      _step;
+
+  try {
+    for (_iterator.s(); !(_step = _iterator.n()).done;) {
+      var c2 = _step.value;
+      if (distance(c.x, c.y, c2.x, c2.y) < c.radius + c2.radius) return false;
+    }
+  } catch (err) {
+    _iterator.e(err);
+  } finally {
+    _iterator.f();
+  }
+
+  return true;
+}
+
+function randomUnfilled(imageData) {
+  var pdata = imageData.data;
+  var possibilities = [];
+
+  for (var i = 0; i < pdata.length / 4; i++) {
+    if (pdata[i] == 0 && pdata[i + 1] == 0 && pdata[i + 2] == 0 && pdata[i + 3] == 0) {
+      possibilities.push({
+        x: i % imageData.width,
+        y: Math.floor(i / imageData.width)
+      });
+    }
+  }
+
+  var pi = Math.floor(Math.random() * possibilities.length);
+  console.log(possibilities[pi]);
+  return possibilities[pi];
+}
 
 module.exports = {
   randomIntFromRange: randomIntFromRange,
   randomColor: randomColor,
-  distance: distance
+  distance: distance,
+  noIntersection: noIntersection,
+  randomUnfilled: randomUnfilled
 };
 
 /***/ })
@@ -182,12 +232,30 @@ var circles = [];
 function init() {
   circles = [];
 
-  for (var i = 0; i < 50; i++) {
-    var x = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.randomIntFromRange)(0, innerWidth);
-    var y = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.randomIntFromRange)(0, innerHeight);
-    var radius = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.randomIntFromRange)(8, 50);
+  for (var i = 0; i < 300; i++) {
+    var radius = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.randomIntFromRange)(8, 30);
+    var x = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.randomIntFromRange)(radius, canvas.width - radius);
+    var y = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.randomIntFromRange)(radius, canvas.height - radius);
     var color = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.randomColor)(colors);
-    circles.push(new Circle(x, y, radius, color));
+    var add = true;
+
+    if (i !== 0) {
+      var count = 0;
+
+      for (var j = 0; j < circles.length; j++) {
+        if (!(0,_utils__WEBPACK_IMPORTED_MODULE_0__.noIntersection)(new Circle(x, y, radius, color), circles)) {
+          x = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.randomIntFromRange)(radius, canvas.width - radius);
+          y = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.randomIntFromRange)(radius, canvas.height - radius);
+          count++;
+          if (count < 10) j = -1;else add = false;
+        } else {
+          add = true;
+          break;
+        }
+      }
+    }
+
+    if (add) circles.push(new Circle(x, y, radius, color));
   }
 } // Animation Loop
 
@@ -199,18 +267,18 @@ function animate() {
   circles.forEach(function (object) {
     object.update();
   });
-  circles[1].x = mouse.x - circles[1].radius;
-  circles[1].y = mouse.y;
+} // let maxR = 50
+// setInterval(() => {
+// 	// c.clearRect(0, 0, canvas.width, canvas.height)
+// 	const imageData = c.getImageData(0, 0, canvas.width, canvas.height)
+// 	const p = randomUnfilled(imageData)
+// 	let r = 1
+// 	while (noIntersection({ x: p.x + r, y: p.y + r, r: r }, circles) && r < maxR) {
+// 		r++
+// 	}
+// 	circles.push(new Circle(p.x, p.y, r - 1, randomColor(colors)))
+// }, 1000)
 
-  if ((0,_utils__WEBPACK_IMPORTED_MODULE_0__.distance)(circles[0].x, circles[0].y, circles[1].x, circles[1].y) < circles[0].radius + circles[1].radius) {
-    console.log('collided');
-    circles[0].color = 'orange';
-  } else {
-    circles[0].color = 'black';
-  }
-
-  console.log((0,_utils__WEBPACK_IMPORTED_MODULE_0__.distance)(circles[0].x, circles[0].y, circles[1].x, circles[1].y));
-}
 
 init();
 animate();

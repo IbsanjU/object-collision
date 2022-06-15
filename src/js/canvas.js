@@ -1,4 +1,4 @@
-import utils, { distance, randomColor, randomIntFromRange } from './utils'
+import utils, { distance, noIntersection, randomColor, randomIntFromRange, randomUnfilled } from './utils'
 
 const canvas = document.querySelector('canvas')
 const c = canvas.getContext('2d')
@@ -53,12 +53,28 @@ let circles = []
 function init() {
 	circles = []
 
-	for (let i = 0; i < 50; i++) {
-		const x = randomIntFromRange(0, innerWidth)
-		const y = randomIntFromRange(0, innerHeight)
-		const radius =  randomIntFromRange(8, 50)
-		const color =  randomColor(colors)
-		circles.push(new Circle(x, y, radius, color))
+	for (let i = 0; i < 300; i++) {
+		const radius = randomIntFromRange(8, 30)
+		let x = randomIntFromRange(radius, canvas.width - radius)
+		let y = randomIntFromRange(radius, canvas.height - radius)
+		const color = randomColor(colors)
+		let add = true
+		if (i !== 0) {
+			let count = 0
+			for (let j = 0; j < circles.length; j++) {
+				if (!noIntersection(new Circle(x, y, radius, color), circles)) {
+					x = randomIntFromRange(radius, canvas.width - radius)
+					y = randomIntFromRange(radius, canvas.height - radius)
+					count++
+					if (count < 10) j = -1
+					else add = false
+				} else {
+					add = true
+					break
+				}
+			}
+		}
+		if (add) circles.push(new Circle(x, y, radius, color))
 	}
 }
 
@@ -71,18 +87,19 @@ function animate() {
 	circles.forEach((object) => {
 		object.update()
 	})
-	circles[1].x = mouse.x - circles[1].radius
-	circles[1].y = mouse.y
-
-	if (distance(circles[0].x, circles[0].y, circles[1].x, circles[1].y) < circles[0].radius + circles[1].radius) {
-		console.log('collided')
-		circles[0].color = 'orange'
-	} else {
-		circles[0].color = 'black'
-	}
-
-	console.log(distance(circles[0].x, circles[0].y, circles[1].x, circles[1].y))
 }
+
+// let maxR = 50
+// setInterval(() => {
+// 	// c.clearRect(0, 0, canvas.width, canvas.height)
+// 	const imageData = c.getImageData(0, 0, canvas.width, canvas.height)
+// 	const p = randomUnfilled(imageData)
+// 	let r = 1
+// 	while (noIntersection({ x: p.x + r, y: p.y + r, r: r }, circles) && r < maxR) {
+// 		r++
+// 	}
+// 	circles.push(new Circle(p.x, p.y, r - 1, randomColor(colors)))
+// }, 1000)
 
 init()
 animate()
