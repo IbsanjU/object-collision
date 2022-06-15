@@ -1,4 +1,4 @@
-import utils from './utils'
+import utils, { distance } from './utils'
 
 const canvas = document.querySelector('canvas')
 const c = canvas.getContext('2d')
@@ -54,9 +54,9 @@ function init() {
 	circles = []
 
 	// for (let i = 0; i < 2; i++) {
-		// add two circles
-		circles.push(new Circle(200, 200, 100, 'black'))
-		circles.push(new Circle(500, 300, 50, 'red'))
+	// add two circles
+	circles.push(new Circle(200, 200, 100, 'black'))
+	circles.push(new Circle(500, 300, 50, 'red'))
 	// }
 }
 
@@ -71,6 +71,8 @@ function animate() {
 	})
 	circles[1].x = mouse.x - circles[1].radius
 	circles[1].y = mouse.y
+
+	console.log(distance(circles[0].x, circles[0].y, circles[1].x, circles[1].y))
 }
 
 init()

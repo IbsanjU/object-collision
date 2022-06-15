@@ -14,6 +14,19 @@ function randomIntFromRange(min, max) {
 function randomColor(colors) {
   return colors[Math.floor(Math.random() * colors.length)];
 }
+/**
+ * Pythagoras' theorem, is a fundamental relation in Euclidean geometry among the three sides of a right triangle.
+ * c^2 = a^2 + b^2
+ * a	=	side of right triangle
+ * b	=	side of right triangle
+ * c	=	hypotenuse
+ * @param {Integer} x1
+ * @param {Integer} y1
+ * @param {Integer} x2
+ * @param {Integer} y2
+ * @returns distance between two points
+ */
+
 
 function distance(x1, y1, x2, y2) {
   var xDist = x2 - x1;
@@ -184,6 +197,7 @@ function animate() {
   });
   circles[1].x = mouse.x - circles[1].radius;
   circles[1].y = mouse.y;
+  console.log((0,_utils__WEBPACK_IMPORTED_MODULE_0__.distance)(circles[0].x, circles[0].y, circles[1].x, circles[1].y));
 }
 
 init();
