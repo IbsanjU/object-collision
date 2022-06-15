@@ -168,6 +168,7 @@ var circles = [];
 
 function init() {
   circles = []; // for (let i = 0; i < 2; i++) {
+  // add two circles
 
   circles.push(new Circle(200, 200, 100, 'black'));
   circles.push(new Circle(500, 300, 100, 'red')); // }
