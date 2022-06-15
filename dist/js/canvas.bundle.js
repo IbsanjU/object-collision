@@ -330,9 +330,12 @@ var Circle = /*#__PURE__*/function () {
       } // mouse collision
 
 
-      if ((0,_utils__WEBPACK_IMPORTED_MODULE_0__.distance)(mouse.x, mouse.y, this.x, this.y) < 30) {
+      if ((0,_utils__WEBPACK_IMPORTED_MODULE_0__.distance)(mouse.x, mouse.y, this.x, this.y) < 30 && this.opacity < 0.2) {
         console.log('mouse collided');
         this.opacity += 0.02;
+      } else if (this.opacity > 0) {
+        this.opacity -= 0.02;
+        this.opacity = Math.max(0, this.opacity);
       }
 
       this.x += this.velocity.x;
