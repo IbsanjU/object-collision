@@ -203,6 +203,10 @@ var Circle = /*#__PURE__*/function () {
 
     this.x = x;
     this.y = y;
+    this.velocity = {
+      x: (0,_utils__WEBPACK_IMPORTED_MODULE_0__.randomIntFromRange)(0.3, 0.5),
+      y: (0,_utils__WEBPACK_IMPORTED_MODULE_0__.randomIntFromRange)(0.3, 0.5)
+    };
     this.radius = radius;
     this.color = color;
   }
@@ -229,6 +233,9 @@ var Circle = /*#__PURE__*/function () {
           console.log('collided');
         }
       }
+
+      this.x += this.velocity.x;
+      this.y += this.velocity.y;
     }
   }]);
 

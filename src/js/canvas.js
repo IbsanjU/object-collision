@@ -31,6 +31,10 @@ class Circle {
 	constructor(x, y, radius, color) {
 		this.x = x
 		this.y = y
+		this.velocity = {
+			x: randomIntFromRange(0.3, 0.5),
+			y: randomIntFromRange(0.3, 0.5)
+		}
 		this.radius = radius
 		this.color = color
 	}
@@ -49,9 +53,11 @@ class Circle {
 			const c = circles[i]
 			if (this === c) continue
 			if (distance(c.x, c.y, this.x, this.y) - c.radius + this.radius < 0) {
-				console.log('collided');
+				console.log('collided')
 			}
 		}
+		this.x += this.velocity.x
+		this.y += this.velocity.y
 	}
 }
 
