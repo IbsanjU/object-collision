@@ -1,4 +1,4 @@
-import utils, { distance } from './utils'
+import utils, { distance, randomColor, randomIntFromRange } from './utils'
 
 const canvas = document.querySelector('canvas')
 const c = canvas.getContext('2d')
@@ -38,8 +38,8 @@ class Circle {
 	draw() {
 		c.beginPath()
 		c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false)
-		c.fillStyle = this.color
-		c.fill()
+		c.strokeStyle = this.color
+		c.stroke()
 		c.closePath()
 	}
 
@@ -53,11 +53,13 @@ let circles = []
 function init() {
 	circles = []
 
-	// for (let i = 0; i < 2; i++) {
-	// add two circles
-	circles.push(new Circle(200, 200, 100, 'black'))
-	circles.push(new Circle(500, 300, 50, 'red'))
-	// }
+	for (let i = 0; i < 50; i++) {
+		const x = randomIntFromRange(0, innerWidth)
+		const y = randomIntFromRange(0, innerHeight)
+		const radius =  randomIntFromRange(8, 50)
+		const color =  randomColor(colors)
+		circles.push(new Circle(x, y, radius, color))
+	}
 }
 
 // Animation Loop

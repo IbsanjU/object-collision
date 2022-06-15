@@ -162,8 +162,8 @@ var Circle = /*#__PURE__*/function () {
     value: function draw() {
       c.beginPath();
       c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
-      c.fillStyle = this.color;
-      c.fill();
+      c.strokeStyle = this.color;
+      c.stroke();
       c.closePath();
     }
   }, {
@@ -180,11 +180,15 @@ var Circle = /*#__PURE__*/function () {
 var circles = [];
 
 function init() {
-  circles = []; // for (let i = 0; i < 2; i++) {
-  // add two circles
+  circles = [];
 
-  circles.push(new Circle(200, 200, 100, 'black'));
-  circles.push(new Circle(500, 300, 50, 'red')); // }
+  for (var i = 0; i < 50; i++) {
+    var x = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.randomIntFromRange)(0, innerWidth);
+    var y = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.randomIntFromRange)(0, innerHeight);
+    var radius = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.randomIntFromRange)(8, 50);
+    var color = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.randomColor)(colors);
+    circles.push(new Circle(x, y, radius, color));
+  }
 } // Animation Loop
 
 
