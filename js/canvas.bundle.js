@@ -234,6 +234,14 @@ var Circle = /*#__PURE__*/function () {
         }
       }
 
+      if (this.x - this.radius <= 0 || this.x + this.radius >= canvas.width) {
+        this.velocity.x = -this.velocity.x;
+      }
+
+      if (this.y - this.radius <= 0 || this.y + this.radius >= canvas.height) {
+        this.velocity.y = -this.velocity.y;
+      }
+
       this.x += this.velocity.x;
       this.y += this.velocity.y;
     }
