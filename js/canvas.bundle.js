@@ -262,7 +262,7 @@ var mouse = {
   x: innerWidth / 2,
   y: innerHeight / 2
 };
-var colors = ['#2185C5', '#7ECEFD', '#FFF6E5', '#FF7F66']; // Event Listeners
+var colors = ['#41C5C5', '#7ECEFD', '#3FA6E5', '#FD7F66']; // Event Listeners
 
 addEventListener('mousemove', function (event) {
   mouse.x = event.clientX;
@@ -281,12 +281,13 @@ var Circle = /*#__PURE__*/function () {
     this.x = x;
     this.y = y;
     this.velocity = {
-      x: (0,_utils__WEBPACK_IMPORTED_MODULE_0__.randomIntFromRange)(0.3, 0.5),
-      y: (0,_utils__WEBPACK_IMPORTED_MODULE_0__.randomIntFromRange)(0.3, 0.5)
+      x: (0,_utils__WEBPACK_IMPORTED_MODULE_0__.randomIntFromRange)(0.3, 2.5),
+      y: (0,_utils__WEBPACK_IMPORTED_MODULE_0__.randomIntFromRange)(0.3, 2.5)
     };
     this.radius = radius;
     this.color = color;
     this.mass = 1;
+    this.opacity = 0;
   }
 
   _createClass(Circle, [{
@@ -294,6 +295,13 @@ var Circle = /*#__PURE__*/function () {
     value: function draw() {
       c.beginPath();
       c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+      c.save(); // save state before fill
+
+      c.globalAlpha = this.opacity;
+      c.fillStyle = this.color;
+      c.fill();
+      c.restore(); // restore the prev state
+
       c.strokeStyle = this.color;
       c.stroke();
       c.closePath();
@@ -319,6 +327,12 @@ var Circle = /*#__PURE__*/function () {
 
       if (this.y - this.radius <= 0 || this.y + this.radius >= canvas.height) {
         this.velocity.y = -this.velocity.y;
+      } // mouse collision
+
+
+      if ((0,_utils__WEBPACK_IMPORTED_MODULE_0__.distance)(mouse.x, mouse.y, this.x, this.y) < 30) {
+        console.log('mouse collided');
+        this.opacity += 0.02;
       }
 
       this.x += this.velocity.x;
