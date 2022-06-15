@@ -1,6 +1,17 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./src/js/colors.js":
+/*!**************************!*\
+  !*** ./src/js/colors.js ***!
+  \**************************/
+/***/ ((module) => {
+
+var colors = ['#41C5C5', '#7ECEFD', '#3FA6E5', '#FD7F66', '#2185C5', '#7ECEFD', '#FFF6E5', '#FF7F66', '#FF6633', '#FFB399', '#FF33FF', '#FFFF99', '#00B3E6', '#E6B333', '#3366E6', '#999966', '#99FF99', '#B34D4D', '#80B300', '#809900', '#E6B3B3', '#6680B3', '#66991A', '#FF99E6', '#CCFF1A', '#FF1A66', '#E6331A', '#33FFCC', '#66994D', '#B366CC', '#4D8000', '#B33300', '#CC80CC', '#66664D', '#991AFF', '#E666FF', '#4DB3FF', '#1AB399', '#E666B3', '#33991A', '#CC9999', '#B3B31A', '#00E680', '#4D8066', '#809980', '#E6FF80', '#1AFF33', '#999933', '#FF3380', '#CCCC00', '#66E64D', '#4D80CC', '#9900B3', '#E64D66', '#4DB380', '#FF4D4D', '#99E6E6', '#6666FF'];
+module.exports = colors;
+
+/***/ }),
+
 /***/ "./src/js/utils.js":
 /*!*************************!*\
   !*** ./src/js/utils.js ***!
@@ -242,15 +253,18 @@ var __webpack_exports__ = {};
   !*** ./src/js/canvas.js ***!
   \**************************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils */ "./src/js/utils.js");
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_utils__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _utils_elastic_collision__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils_elastic_collision */ "./src/js/utils_elastic_collision.js");
-/* harmony import */ var _utils_elastic_collision__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_utils_elastic_collision__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _colors__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./colors */ "./src/js/colors.js");
+/* harmony import */ var _colors__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_colors__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils */ "./src/js/utils.js");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_utils__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _utils_elastic_collision__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./utils_elastic_collision */ "./src/js/utils_elastic_collision.js");
+/* harmony import */ var _utils_elastic_collision__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_utils_elastic_collision__WEBPACK_IMPORTED_MODULE_2__);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
 
 
 
@@ -261,8 +275,7 @@ canvas.height = innerHeight;
 var mouse = {
   x: innerWidth / 2,
   y: innerHeight / 2
-};
-var colors = ['#41C5C5', '#7ECEFD', '#3FA6E5', '#FD7F66']; // Event Listeners
+}; // Event Listeners
 
 addEventListener('mousemove', function (event) {
   mouse.x = event.clientX;
@@ -281,8 +294,8 @@ var Circle = /*#__PURE__*/function () {
     this.x = x;
     this.y = y;
     this.velocity = {
-      x: (0,_utils__WEBPACK_IMPORTED_MODULE_0__.randomIntFromRange)(0.3, 2.5),
-      y: (0,_utils__WEBPACK_IMPORTED_MODULE_0__.randomIntFromRange)(0.3, 2.5)
+      x: (0,_utils__WEBPACK_IMPORTED_MODULE_1__.randomIntFromRange)(0.3, 2.5),
+      y: (0,_utils__WEBPACK_IMPORTED_MODULE_1__.randomIntFromRange)(0.3, 2.5)
     };
     this.radius = radius;
     this.color = color;
@@ -315,9 +328,8 @@ var Circle = /*#__PURE__*/function () {
         var _c = circles[i];
         if (this === _c) continue;
 
-        if ((0,_utils__WEBPACK_IMPORTED_MODULE_0__.distance)(_c.x, _c.y, this.x, this.y) - (_c.radius + this.radius) < 0) {
-          console.log('collided');
-          (0,_utils_elastic_collision__WEBPACK_IMPORTED_MODULE_1__.resolveCollision)(this, _c);
+        if ((0,_utils__WEBPACK_IMPORTED_MODULE_1__.distance)(_c.x, _c.y, this.x, this.y) - (_c.radius + this.radius) < 0) {
+          (0,_utils_elastic_collision__WEBPACK_IMPORTED_MODULE_2__.resolveCollision)(this, _c);
         }
       }
 
@@ -330,8 +342,7 @@ var Circle = /*#__PURE__*/function () {
       } // mouse collision
 
 
-      if ((0,_utils__WEBPACK_IMPORTED_MODULE_0__.distance)(mouse.x, mouse.y, this.x, this.y) < 120 && this.opacity < 0.2) {
-        console.log('mouse collided');
+      if ((0,_utils__WEBPACK_IMPORTED_MODULE_1__.distance)(mouse.x, mouse.y, this.x, this.y) < 120 && this.opacity < 0.2) {
         this.opacity += 0.02;
       } else if (this.opacity > 0) {
         this.opacity -= 0.02;
@@ -352,20 +363,20 @@ var circles = [];
 function init() {
   circles = [];
 
-  for (var i = 0; i < 100; i++) {
-    var radius = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.randomIntFromRange)(8, 30);
-    var x = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.randomIntFromRange)(radius, canvas.width - radius);
-    var y = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.randomIntFromRange)(radius, canvas.height - radius);
-    var color = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.randomColor)(colors);
+  for (var i = 0; i < 200; i++) {
+    var radius = (0,_utils__WEBPACK_IMPORTED_MODULE_1__.randomIntFromRange)(8, 30);
+    var x = (0,_utils__WEBPACK_IMPORTED_MODULE_1__.randomIntFromRange)(radius, canvas.width - radius);
+    var y = (0,_utils__WEBPACK_IMPORTED_MODULE_1__.randomIntFromRange)(radius, canvas.height - radius);
+    var color = (0,_utils__WEBPACK_IMPORTED_MODULE_1__.randomColor)((_colors__WEBPACK_IMPORTED_MODULE_0___default()));
     var add = true;
 
     if (i !== 0) {
       var count = 0;
 
       for (var j = 0; j < circles.length; j++) {
-        if (!(0,_utils__WEBPACK_IMPORTED_MODULE_0__.noIntersection)(new Circle(x, y, radius, color), circles)) {
-          x = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.randomIntFromRange)(radius, canvas.width - radius);
-          y = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.randomIntFromRange)(radius, canvas.height - radius);
+        if (!(0,_utils__WEBPACK_IMPORTED_MODULE_1__.noIntersection)(new Circle(x, y, radius, color), circles)) {
+          x = (0,_utils__WEBPACK_IMPORTED_MODULE_1__.randomIntFromRange)(radius, canvas.width - radius);
+          y = (0,_utils__WEBPACK_IMPORTED_MODULE_1__.randomIntFromRange)(radius, canvas.height - radius);
           count++;
           if (count < 10) j = -1;else add = false;
         } else {
@@ -382,8 +393,8 @@ function init() {
 
 function animate() {
   requestAnimationFrame(animate);
-  c.clearRect(0, 0, canvas.width, canvas.height); // c.fillText('IbsanjU', mouse.x, mouse.y)
-
+  c.clearRect(0, 0, canvas.width, canvas.height);
+  c.fillText('IbsanjU', mouse.x, mouse.y);
   circles.forEach(function (object) {
     object.update(circles);
   });
