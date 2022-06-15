@@ -1,3 +1,4 @@
+import colors from './colors'
 import utils, { distance, noIntersection, randomColor, randomIntFromRange, randomUnfilled } from './utils'
 import { resolveCollision } from './utils_elastic_collision'
 
@@ -11,8 +12,6 @@ const mouse = {
 	x: innerWidth / 2,
 	y: innerHeight / 2
 }
-
-const colors = ['#41C5C5', '#7ECEFD', '#3FA6E5', '#FD7F66']
 
 // Event Listeners
 addEventListener('mousemove', (event) => {
@@ -61,7 +60,6 @@ class Circle {
 			const c = circles[i]
 			if (this === c) continue
 			if (distance(c.x, c.y, this.x, this.y) - (c.radius + this.radius) < 0) {
-				console.log('collided')
 				resolveCollision(this, c)
 			}
 		}
@@ -74,7 +72,6 @@ class Circle {
 
 		// mouse collision
 		if (distance(mouse.x, mouse.y, this.x, this.y) < 120 && this.opacity < 0.2) {
-			console.log('mouse collided')
 			this.opacity += 0.02
 		} else if (this.opacity > 0) {
 			this.opacity -= 0.02
@@ -91,7 +88,7 @@ let circles = []
 function init() {
 	circles = []
 
-	for (let i = 0; i < 100; i++) {
+	for (let i = 0; i < 200; i++) {
 		const radius = randomIntFromRange(8, 30)
 		let x = randomIntFromRange(radius, canvas.width - radius)
 		let y = randomIntFromRange(radius, canvas.height - radius)
@@ -120,8 +117,7 @@ function init() {
 function animate() {
 	requestAnimationFrame(animate)
 	c.clearRect(0, 0, canvas.width, canvas.height)
-
-	// c.fillText('IbsanjU', mouse.x, mouse.y)
+	c.fillText('IbsanjU', mouse.x, mouse.y)
 	circles.forEach((object) => {
 		object.update(circles)
 	})
