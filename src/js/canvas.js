@@ -43,8 +43,15 @@ class Circle {
 		c.closePath()
 	}
 
-	update() {
+	update(circles) {
 		this.draw()
+		for (let i = 0; i < circles.length; i++) {
+			const c = circles[i]
+			if (this === c) continue
+			if (distance(c.x, c.y, this.x, this.y) - c.radius + this.radius < 0) {
+				console.log('collided');
+			}
+		}
 	}
 }
 
@@ -53,7 +60,7 @@ let circles = []
 function init() {
 	circles = []
 
-	for (let i = 0; i < 300; i++) {
+	for (let i = 0; i < 100; i++) {
 		const radius = randomIntFromRange(8, 30)
 		let x = randomIntFromRange(radius, canvas.width - radius)
 		let y = randomIntFromRange(radius, canvas.height - radius)
@@ -85,7 +92,7 @@ function animate() {
 
 	// c.fillText('IbsanjU', mouse.x, mouse.y)
 	circles.forEach((object) => {
-		object.update()
+		object.update(circles)
 	})
 }
 

@@ -218,8 +218,17 @@ var Circle = /*#__PURE__*/function () {
     }
   }, {
     key: "update",
-    value: function update() {
+    value: function update(circles) {
       this.draw();
+
+      for (var i = 0; i < circles.length; i++) {
+        var _c = circles[i];
+        if (this === _c) continue;
+
+        if ((0,_utils__WEBPACK_IMPORTED_MODULE_0__.distance)(_c.x, _c.y, this.x, this.y) - _c.radius + this.radius < 0) {
+          console.log('collided');
+        }
+      }
     }
   }]);
 
@@ -232,7 +241,7 @@ var circles = [];
 function init() {
   circles = [];
 
-  for (var i = 0; i < 300; i++) {
+  for (var i = 0; i < 100; i++) {
     var radius = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.randomIntFromRange)(8, 30);
     var x = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.randomIntFromRange)(radius, canvas.width - radius);
     var y = (0,_utils__WEBPACK_IMPORTED_MODULE_0__.randomIntFromRange)(radius, canvas.height - radius);
@@ -265,7 +274,7 @@ function animate() {
   c.clearRect(0, 0, canvas.width, canvas.height); // c.fillText('IbsanjU', mouse.x, mouse.y)
 
   circles.forEach(function (object) {
-    object.update();
+    object.update(circles);
   });
 } // let maxR = 50
 // setInterval(() => {
