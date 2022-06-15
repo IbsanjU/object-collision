@@ -72,6 +72,10 @@ function animate() {
 	circles[1].x = mouse.x - circles[1].radius
 	circles[1].y = mouse.y
 
+	if (distance(circles[0].x, circles[0].y, circles[1].x, circles[1].y) < circles[0].radius + circles[1].radius) {
+		console.log('collided')
+	}
+
 	console.log(distance(circles[0].x, circles[0].y, circles[1].x, circles[1].y))
 }
 

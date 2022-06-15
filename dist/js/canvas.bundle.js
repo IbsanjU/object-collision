@@ -197,6 +197,11 @@ function animate() {
   });
   circles[1].x = mouse.x - circles[1].radius;
   circles[1].y = mouse.y;
+
+  if ((0,_utils__WEBPACK_IMPORTED_MODULE_0__.distance)(circles[0].x, circles[0].y, circles[1].x, circles[1].y) < circles[0].radius + circles[1].radius) {
+    console.log('collided');
+  }
+
   console.log((0,_utils__WEBPACK_IMPORTED_MODULE_0__.distance)(circles[0].x, circles[0].y, circles[1].x, circles[1].y));
 }
 
