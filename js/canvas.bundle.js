@@ -171,17 +171,19 @@ function init() {
   // add two circles
 
   circles.push(new Circle(200, 200, 100, 'black'));
-  circles.push(new Circle(500, 300, 100, 'red')); // }
+  circles.push(new Circle(500, 300, 50, 'red')); // }
 } // Animation Loop
 
 
 function animate() {
   requestAnimationFrame(animate);
-  c.clearRect(0, 0, canvas.width, canvas.height);
-  c.fillText('IbsanjU', mouse.x, mouse.y);
+  c.clearRect(0, 0, canvas.width, canvas.height); // c.fillText('IbsanjU', mouse.x, mouse.y)
+
   circles.forEach(function (object) {
     object.update();
   });
+  circles[1].x = mouse.x - circles[1].radius;
+  circles[1].y = mouse.y;
 }
 
 init();
